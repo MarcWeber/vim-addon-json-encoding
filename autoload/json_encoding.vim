@@ -35,7 +35,7 @@ fun! json_encoding#Encode(thing, ...)
       call add(pairs, json_encoding#Encode(Key).':'.json_encoding#Encode(Value))
       unlet Key | unlet Value
     endfor
-    return "{".nl.join(pairs, ",".nl).nl"}"
+    return "{".nl.join(pairs, ",".nl)."}"
   elseif type(a:thing) == type(0)
     return a:thing
   elseif type(a:thing) == type([])
