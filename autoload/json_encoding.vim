@@ -12,13 +12,16 @@
 " false -> 0 (=vim value for false)
 " null  -> 0 (=vims return value for procedures which is semantically similar to null - Yes, this is an arbitrary choice)
 fun! json_encoding#NULL()
-  return function("json_encoding#NULL")
+  " return function("json_encoding#NULL")
+  return {'json_special_value': 'null'}
 endf
 fun! json_encoding#True()
-  return function("json_encoding#True")
+  " return function("json_encoding#True")
+  return {'json_special_value': 'true'}
 endf
 fun! json_encoding#False()
-  return function("json_encoding#False")
+  " return function("json_encoding#False")
+  return {'json_special_value': 'false'}
 endf
 fun! json_encoding#ToJSONBool(i)
   return  a:i ? json_encoding#True() : json_encoding#False()
@@ -29,7 +32,7 @@ fun! json_encoding#Encode(thing, ...)
   let nl = a:0 > 0 ? (a:1 ? "\n" : "") : ""
   if type(a:thing) == type("")
     return '"'.escape(a:thing,'"').'"'
-  elseif type(a:thing) == type({})
+  elseif type(a:thing) == type({}) && !has_key(a:thing, 'json_special_value')
     let pairs = []
     for [Key, Value] in items(a:thing)
       call add(pairs, json_encoding#Encode(Key).':'.json_encoding#Encode(Value))
@@ -59,6 +62,13 @@ fun! json_encoding#Decode(s)
   let true = 1
   let false = 0
   let null = 0
+  return eval(a:s)
+endf
+
+fun! json_encoding#DecodePreserve(s)
+  let true = json_encoding#True()
+  let false = json_encoding#False()
+  let null = json_encoding#NULL()
   return eval(a:s)
 endf
 
