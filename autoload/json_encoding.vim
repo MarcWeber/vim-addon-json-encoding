@@ -31,7 +31,7 @@ endf
 fun! json_encoding#Encode(thing, ...)
   let nl = a:0 > 0 ? (a:1 ? "\n" : "") : ""
   if type(a:thing) == type("")
-    return '"'.escape(a:thing,'"').'"'
+    return '"'.escape(a:thing,'"\').'"'
   elseif type(a:thing) == type({}) && !has_key(a:thing, 'json_special_value')
     let pairs = []
     for [Key, Value] in items(a:thing)
