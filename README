@@ -5,3 +5,5 @@ It should work fine for commonly used characters, but don't expect Vim's
 encoding to fit JSON exactly.
 
 This plugin is used by some of my plugins.
+
+TODO: drop this library - current Vim has json_encode / decode (no idea how it encodes true /false values)
